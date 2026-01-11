@@ -269,9 +269,11 @@
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 
     <!-- Example Data -->
+    <script type="application/json" id="example-issues-data">{{ examples | tojson }}</script>
+    <script type="application/json" id="repo-info-data">{{ repos | tojson }}</script>
     <script>
-        window.exampleIssues = {{ examples | tojson }};
-        window.repoInfo = {{ repos | tojson }};
+        window.exampleIssues = JSON.parse(document.getElementById('example-issues-data').textContent);
+        window.repoInfo = JSON.parse(document.getElementById('repo-info-data').textContent);
     </script>
 </body>
 </html> 
