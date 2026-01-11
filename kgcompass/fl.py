@@ -74,22 +74,22 @@ class CodeAnalyzer:
 
     def _clean_path(self, file_path: str) -> str:
         """Return a normalized absolute path with forward slashes.
-        此函数曾经去掉 'playground/' 前缀，导致同一文件在 KG 中出现两种 path 表示
-        （绝对路径 vs. 相对路径），从而使 Issue-File 与 File-Method 无法连通。
+        This function previously removed the 'playground/' prefix, causing the same file to appear in KG with two different path representations
+        (absolute path vs. relative path), making Issue-File and File-Method unable to connect.
 
-        为保持一致性，改为简单地规范化路径分隔符，并返回绝对路径。
+        For consistency, changed to simply normalize path separators and return absolute path.
         """
-        # 统一为 Linux 风格分隔符
+        # Unify to Linux-style separators
         path = os.path.normpath(file_path).replace('\\', '/')
 
-        # 去掉 'playground/' 前缀
+        # Remove 'playground/' prefix
         prefix = 'playground/'
         if path.startswith(prefix):
             path_after_playground = path[len(prefix):]
         else:
             path_after_playground = path
 
-        # 去掉仓库顶层目录（如 astropy__astropy）
+        # Remove repository top-level directory (e.g., astropy__astropy)
         repo_dir = os.path.basename(os.path.normpath(self.config['repo_path'].rstrip('/')))
         parts = path_after_playground.split('/')
         if parts and parts[0] == repo_dir:
@@ -299,7 +299,7 @@ class CodeAnalyzer:
         elif benchmark_name == 'swe-bench':
             print(f"Loading SWE-bench dataset: {DATASET_NAME}...")
             try:
-                # 尝试强制重新下载数据集
+                # Try to force re-download dataset
                 print(f"Attempting to load {DATASET_NAME} with force_redownload...")
                 ds = load_dataset(DATASET_NAME, download_mode="force_redownload")
                 
@@ -331,9 +331,9 @@ class CodeAnalyzer:
                 found_item = None
                 print(f"Searching for instance_id='{self.config['instance_id']}' and repo='{self.config['repo_name']}' in split '{chosen_split_name}'.")
                 
-                # 打印前几个条目以供诊断
+                # Print first few entries for diagnosis
                 for i, item in enumerate(data_split):
-                    if i < 5: # 只打印前5个
+                    if i < 5: # Only print first 5
                         print(f"  Dataset item {i}: instance_id='{item.get('instance_id')}', repo='{item.get('repo')}'")
                     
                     if (item.get('repo') == self.config['repo_name'] and
@@ -416,7 +416,7 @@ class CodeAnalyzer:
         if parser is None:
             return
 
-        # 检查文件扩展名
+        # Check file extension
         if not any(file_path.endswith(ext) for ext in self.language_config.config['file_extensions']):
             return
             
@@ -431,13 +431,13 @@ class CodeAnalyzer:
         print(f"Processing file: {file_path}")
         self.processed_files.add(file_path)
         
-        # 使用语言特定的解析器
+        # Use language-specific parser
         classes = parser.extract_classes(file_path)
         
         for class_info in classes:
             class_name = class_info['name'] if class_info['name'] else '__'
             
-            # 创建类实体
+            # Create class entity
             self.kg.create_class_entity(
                 class_name,
                 class_info['file_path'],
@@ -449,7 +449,7 @@ class CodeAnalyzer:
             )
             self.kg.link_class_to_file(class_name, class_info['file_path'], STRONG_CONNECTION)
             
-            # 处理方法
+            # Process methods
             for method in class_info.get('methods', []):
                 method_name = f"{method['name']}"
                 
@@ -565,15 +565,15 @@ class CodeAnalyzer:
                     self.kg.create_method_entity(item['name'], item['signature'], item['file_path'], item['start_line'], item['end_line'], item['source_code'], item.get('doc_string', ''), STRONG_CONNECTION)
                     self.kg.link_method_to_issue(item['name'], item['signature'], item['file_path'], issue_id, STRONG_CONNECTION)
                     self.kg.link_method_to_file(item['name'], item['signature'], item['file_path'], STRONG_CONNECTION)
-                # 如果未找到任何类或方法，则回退到整体文件级解析
+                # If no class or method found, fallback to whole file-level parsing
                 if not belongs['classes'] and not belongs['methods']:
                     print(f"No class/method matched lines {start_line}-{end_line}, fallback to whole file")
-                    # 解析并创建整个文件的类与方法实体，再全部关联到该 PR
+                    # Parse and create class and method entities for the entire file, then associate all with this PR
                     clean_file_path = self._clean_path(file_path)
                     self._build_file_class_methods(file_path)
-                    # 建立文件与 PR 的关系
+                    # Establish relationship between file and PR
                     self.kg.link_issue_to_file(issue_id, clean_file_path, STRONG_CONNECTION)
-                    # 获取刚刚写入 KG 的类/方法节点评估
+                    # Get class/method nodes just written to KG for evaluation
                     all_classes = parser.extract_classes(file_path)
                     all_methods = parser.get_global_methods(file_path, self.config['repo_root'])
                     all_methods.extend(parser.get_global_variables(file_path, self.config['repo_root']))
@@ -581,7 +581,7 @@ class CodeAnalyzer:
                         self.kg.link_class_to_issue(cls['name'], cls['file_path'], issue_id, NORMAL_CONNECTION)
                     for m in all_methods:
                         self.kg.link_method_to_issue(m['name'], m['signature'], m['file_path'], issue_id, NORMAL_CONNECTION)
-                    # 跳过后续按 belongs 处理的逻辑
+                    # Skip subsequent processing logic based on belongs
                     continue
         print(f"Completed processing PR #{issue_id} modified methods")
         # Add to processed cache
@@ -1539,10 +1539,10 @@ if __name__ == "__main__":
     result = analyzer.analyze()
 
     if result is None:
-        # _get_target_sample() 已经打印了 "No sample found..."
-        # _cleanup() 已经在 analyze() 方法的 finally 中被调用
+        # _get_target_sample() has already printed "No sample found..."
+        # _cleanup() has already been called in the finally block of analyze() method
         print(f"Analysis returned no result for {instance_id_arg}. Exiting with error status.")
-        sys.exit(1) # 以非零状态码退出
+        sys.exit(1) # Exit with non-zero status code
     
     output_file_path = os.path.join(fl_location_dir_arg, f"{instance_id_arg}.json")
     with open(output_file_path, 'w') as f:

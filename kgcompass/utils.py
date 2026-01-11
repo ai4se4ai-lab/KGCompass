@@ -203,7 +203,7 @@ def get_pr_file_line_belongs(pull_request, repo_root, file_path, start_line, end
             shutil.rmtree(temp_dir)
             
     except Exception as e:
-        print(f"获取文件行归属时出错: {e}")
+        print(f"Error getting file line ownership: {e}")
         print(traceback.format_exc())
         return belongs_to
 

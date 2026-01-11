@@ -1,6 +1,6 @@
 /**
  * KGCompass Web Interface - JavaScript Logic
- * 管理修复任务的前端交互和实时更新
+ * Manages frontend interactions and real-time updates for repair tasks
  */
 
 class KGCompassApp {
@@ -14,7 +14,7 @@ class KGCompassApp {
     }
 
     /**
-     * 初始化应用
+     * Initialize application
      */
     initializeApp() {
         this.initializeSocket();
@@ -26,65 +26,65 @@ class KGCompassApp {
     }
 
     /**
-     * 初始化 WebSocket 连接
+     * Initialize WebSocket connection
      */
     initializeSocket() {
         this.socket = io();
         
         this.socket.on('connect', () => {
             console.log('✅ WebSocket connected');
-            this.showNotification('已连接到服务器', 'success');
+            this.showNotification('Connected to server', 'success');
         });
         
         this.socket.on('disconnect', () => {
             console.log('❌ WebSocket disconnected');
-            this.showNotification('与服务器断开连接', 'warning');
+            this.showNotification('Disconnected from server', 'warning');
         });
         
         this.socket.on('connected', (data) => {
             console.log('📡 Server message:', data.message);
         });
         
-        // 任务更新事件
+        // Task update events
         this.socket.on('task_update', (data) => {
             this.handleTaskUpdate(data);
         });
         
-        // 任务日志事件
+        // Task log events
         this.socket.on('task_log', (data) => {
             this.handleTaskLog(data);
         });
         
-        // 任务进度事件
+        // Task progress events
         this.socket.on('task_progress', (data) => {
             this.handleTaskProgress(data);
         });
     }
 
     /**
-     * 设置事件监听器
+     * Setup event listeners
      */
     setupEventListeners() {
-        // 修复表单提交
+        // Repair form submission
         const repairForm = document.getElementById('repairForm');
         repairForm.addEventListener('submit', (e) => {
             e.preventDefault();
             this.startRepairTask();
         });
         
-        // 下载补丁按钮
+        // Download patch button
         const downloadBtn = document.getElementById('downloadPatchBtn');
         downloadBtn.addEventListener('click', () => {
             this.downloadPatch();
         });
         
-        // 查看报告按钮
+        // View report button
         const viewReportBtn = document.getElementById('viewReportBtn');
         viewReportBtn.addEventListener('click', () => {
             this.viewReport();
         });
         
-        // 新建任务按钮
+        // New task button
         const newTaskBtn = document.getElementById('newTaskBtn');
         newTaskBtn.addEventListener('click', () => {
             this.resetInterface();
@@ -92,19 +92,19 @@ class KGCompassApp {
     }
 
     /**
-     * 设置示例按钮
+     * Setup example buttons
      */
     setupExampleButtons() {
         const exampleContainer = document.getElementById('exampleButtons');
         
-        // 清空容器
+        // Clear container
         exampleContainer.innerHTML = '';
         
-        // 为每个仓库创建示例按钮
+        // Create example buttons for each repository
         Object.keys(window.exampleIssues).forEach(repoKey => {
             const examples = window.exampleIssues[repoKey];
             if (examples && examples.length > 0) {
-                // 只显示第一个示例，避免界面过于拥挤
+                // Only show the first example to avoid cluttering the interface
                 const exampleId = examples[0];
                 const button = document.createElement('button');
                 button.type = 'button';
@@ -118,7 +118,7 @@ class KGCompassApp {
     }
 
     /**
-     * 设置仓库选择器
+     * Setup repository selector
      */
     setupRepoSelector() {
         const repoSelect = document.getElementById('repoSelect');
@@ -133,17 +133,17 @@ class KGCompassApp {
                 const stars = option.dataset.stars;
                 repoDescription.textContent = `${description} (${stars} ⭐)`;
                 
-                // 更新示例按钮
+                // Update example buttons
                 this.updateExampleButtons(selectedRepo);
             } else {
                 repoDescription.textContent = '';
-                this.setupExampleButtons(); // 重置为所有示例
+                this.setupExampleButtons(); // Reset to all examples
             }
         });
     }
 
     /**
-     * 更新示例按钮（只显示选中仓库的示例）
+     * Update example buttons (only show examples for selected repository)
      */
     updateExampleButtons(repoKey) {
         const exampleContainer = document.getElementById('exampleButtons');
@@ -164,36 +164,36 @@ class KGCompassApp {
     }
 
     /**
-     * 填充示例数据
+     * Fill example data
      */
     fillExample(repoKey, instanceId) {
         document.getElementById('repoSelect').value = repoKey;
         document.getElementById('instanceId').value = instanceId;
         
-        // 触发仓库选择器的 change 事件
+        // Trigger repository selector change event
         const repoSelect = document.getElementById('repoSelect');
         const event = new Event('change');
         repoSelect.dispatchEvent(event);
         
-        this.showNotification(`已填充示例: ${instanceId}`, 'info');
+        this.showNotification(`Filled example: ${instanceId}`, 'info');
     }
 
     /**
-     * 启动修复任务
+     * Start repair task
      */
     async startRepairTask() {
         const repoKey = document.getElementById('repoSelect').value;
         const instanceId = document.getElementById('instanceId').value.trim();
         
         if (!repoKey || !instanceId) {
-            this.showNotification('请选择仓库和填写实例ID', 'error');
+            this.showNotification('Please select a repository and enter instance ID', 'error');
             return;
         }
         
-        // 禁用提交按钮
+        // Disable submit button
         const submitBtn = document.getElementById('startRepairBtn');
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="loading-spinner me-2"></span>启动中...';
+        submitBtn.innerHTML = '<span class="loading-spinner me-2"></span>Starting...';
         
         try {
             const response = await fetch('/api/start_repair', {
@@ -220,7 +220,7 @@ class KGCompassApp {
                 this.showTaskInterface();
                 this.showNotification(result.message, 'success');
                 
-                // 开始轮询任务状态
+                // Start polling task status
                 this.startStatusPolling();
                 
             } else {
@@ -230,58 +230,58 @@ class KGCompassApp {
             
         } catch (error) {
             console.error('Error starting repair task:', error);
-            this.showNotification('启动任务时发生错误', 'error');
+            this.showNotification('Error occurred while starting task', 'error');
             this.resetSubmitButton();
         }
     }
 
     /**
-     * 重置提交按钮
+     * Reset submit button
      */
     resetSubmitButton() {
         const submitBtn = document.getElementById('startRepairBtn');
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fas fa-magic me-2"></i>开始修复';
+        submitBtn.innerHTML = '<i class="fas fa-magic me-2"></i>Start Repair';
     }
 
     /**
-     * 显示任务界面
+     * Show task interface
      */
     showTaskInterface() {
         document.getElementById('defaultStatus').classList.add('d-none');
         document.getElementById('taskStatus').classList.remove('d-none');
         
-        // 填充任务信息
+        // Fill task information
         document.getElementById('taskRepo').textContent = this.currentTask.repo_name;
         document.getElementById('taskInstance').textContent = this.currentTask.instance_id;
         
-        // 重置进度
-        this.updateProgress(0, '初始化...');
+        // Reset progress
+        this.updateProgress(0, 'Initializing...');
         
-        // 清空日志
+        // Clear logs
         document.getElementById('logContent').innerHTML = '';
         this.logBuffer = [];
     }
 
     /**
-     * 开始状态轮询
+     * Start status polling
      */
     startStatusPolling() {
         if (this.statusPollingInterval) {
             clearInterval(this.statusPollingInterval);
         }
         
-        // 立即检查一次状态
+        // Check status immediately
         this.checkTaskStatus();
         
-        // 每 2 秒检查一次状态
+        // Check status every 2 seconds
         this.statusPollingInterval = setInterval(() => {
             this.checkTaskStatus();
         }, 2000);
     }
 
     /**
-     * 检查任务状态
+     * Check task status
      */
     async checkTaskStatus() {
         if (!this.currentTaskId) return;
@@ -294,13 +294,13 @@ class KGCompassApp {
                 const task = result.task;
                 const logs = result.logs;
                 
-                // 更新进度
+                // Update progress
                 this.updateProgress(task.progress, task.current_step);
                 
-                // 更新日志（只添加新的日志）
+                // Update logs (only add new logs)
                 this.updateLogs(logs);
                 
-                // 检查任务是否完成
+                // Check if task is completed
                 if (task.status === 'completed') {
                     this.handleTaskCompletion(task);
                 } else if (task.status === 'error') {
@@ -317,14 +317,14 @@ class KGCompassApp {
     }
 
     /**
-     * 处理任务更新
+     * Handle task update
      */
     handleTaskUpdate(data) {
         if (data.task_id !== this.currentTaskId) return;
         
         this.updateProgress(data.progress, data.message);
         
-        // 更新进度条颜色
+        // Update progress bar color
         const progressBar = document.getElementById('progressBar');
         if (data.status === 'completed') {
             progressBar.className = 'progress-bar bg-success';
@@ -334,7 +334,7 @@ class KGCompassApp {
     }
 
     /**
-     * 处理任务日志
+     * Handle task log
      */
     handleTaskLog(data) {
         if (data.task_id !== this.currentTaskId) return;
@@ -343,7 +343,7 @@ class KGCompassApp {
     }
 
     /**
-     * 处理任务进度
+     * Handle task progress
      */
     handleTaskProgress(data) {
         if (data.task_id !== this.currentTaskId) return;
@@ -352,7 +352,7 @@ class KGCompassApp {
     }
 
     /**
-     * 更新进度
+     * Update progress
      */
     updateProgress(progress, message) {
         const progressBar = document.getElementById('progressBar');
@@ -365,12 +365,12 @@ class KGCompassApp {
     }
 
     /**
-     * 更新日志
+     * Update logs
      */
     updateLogs(logs) {
         const logContent = document.getElementById('logContent');
         
-        // 检查是否有新日志
+        // Check for new logs
         logs.forEach(log => {
             if (!this.logBuffer.includes(log)) {
                 this.logBuffer.push(log);
@@ -380,7 +380,7 @@ class KGCompassApp {
     }
 
     /**
-     * 添加日志消息
+     * Add log message
      */
     addLogMessage(message) {
         const logContent = document.getElementById('logContent');
@@ -392,46 +392,46 @@ class KGCompassApp {
         
         logContent.appendChild(logLine);
         
-        // 自动滚动到底部
+        // Auto scroll to bottom
         logContainer.scrollTop = logContainer.scrollHeight;
     }
 
     /**
-     * 处理任务完成
+     * Handle task completion
      */
     handleTaskCompletion(task) {
-        // 停止状态轮询
+        // Stop status polling
         if (this.statusPollingInterval) {
             clearInterval(this.statusPollingInterval);
         }
         
-        // 显示完成操作
+        // Show completion actions
         document.getElementById('completedActions').classList.remove('d-none');
         
-        // 重置提交按钮
+        // Reset submit button
         this.resetSubmitButton();
         
-        this.showNotification('🎉 修复任务完成！', 'success');
+        this.showNotification('🎉 Repair task completed!', 'success');
     }
 
     /**
-     * 处理任务错误
+     * Handle task error
      */
     handleTaskError(task) {
-        // 停止状态轮询
+        // Stop status polling
         if (this.statusPollingInterval) {
             clearInterval(this.statusPollingInterval);
         }
         
-        // 重置提交按钮
+        // Reset submit button
         this.resetSubmitButton();
         
-        const errorMsg = task.error || '修复任务执行失败';
+        const errorMsg = task.error || 'Repair task execution failed';
         this.showNotification(`❌ ${errorMsg}`, 'error');
     }
 
     /**
-     * 下载补丁
+     * Download patch
      */
     downloadPatch() {
         if (!this.currentTaskId) return;
@@ -442,55 +442,55 @@ class KGCompassApp {
         link.download = `${this.currentTask.instance_id}_patch.diff`;
         link.click();
         
-        this.showNotification('开始下载补丁文件', 'info');
+        this.showNotification('Starting patch file download', 'info');
     }
 
     /**
-     * 查看报告
+     * View report
      */
     viewReport() {
         if (!this.currentTask || !this.currentTaskId) return;
         
-        // 打开补丁预览页面
+        // Open patch preview page
         const patchViewUrl = `/patch_view/${this.currentTaskId}`;
         window.open(patchViewUrl, '_blank');
     }
 
     /**
-     * 重置界面
+     * Reset interface
      */
     resetInterface() {
-        // 停止状态轮询
+        // Stop status polling
         if (this.statusPollingInterval) {
             clearInterval(this.statusPollingInterval);
         }
         
-        // 重置状态
+        // Reset state
         this.currentTaskId = null;
         this.currentTask = null;
         this.logBuffer = [];
         
-        // 重置界面
+        // Reset interface
         document.getElementById('taskStatus').classList.add('d-none');
         document.getElementById('defaultStatus').classList.remove('d-none');
         document.getElementById('completedActions').classList.add('d-none');
         
-        // 清空表单
+        // Clear form
         document.getElementById('repairForm').reset();
         document.getElementById('repoDescription').textContent = '';
         
-        // 重置提交按钮
+        // Reset submit button
         this.resetSubmitButton();
         
-        // 重置示例按钮
+        // Reset example buttons
         this.setupExampleButtons();
     }
 
     /**
-     * 显示通知
+     * Show notification
      */
     showNotification(message, type = 'info') {
-        // 创建通知元素
+        // Create notification element
         const notification = document.createElement('div');
         notification.className = `alert alert-${this.getBootstrapAlertClass(type)} alert-dismissible fade show position-fixed`;
         notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
@@ -502,7 +502,7 @@ class KGCompassApp {
         
         document.body.appendChild(notification);
         
-        // 自动移除
+        // Auto remove
         setTimeout(() => {
             if (notification.parentNode) {
                 notification.parentNode.removeChild(notification);
@@ -511,7 +511,7 @@ class KGCompassApp {
     }
 
     /**
-     * 获取 Bootstrap 警告类
+     * Get Bootstrap alert class
      */
     getBootstrapAlertClass(type) {
         const classMap = {
@@ -524,7 +524,7 @@ class KGCompassApp {
     }
 
     /**
-     * 获取通知图标
+     * Get notification icon
      */
     getNotificationIcon(type) {
         const iconMap = {
@@ -537,22 +537,22 @@ class KGCompassApp {
     }
 }
 
-// 页面加载完成后初始化应用
+// Initialize application after page load
 document.addEventListener('DOMContentLoaded', () => {
     window.kgCompassApp = new KGCompassApp();
 });
 
-// 添加一些实用工具函数
+// Add some utility functions
 window.KGCompassUtils = {
     /**
-     * 格式化时间戳
+     * Format timestamp
      */
     formatTimestamp(timestamp) {
-        return new Date(timestamp).toLocaleString('zh-CN');
+        return new Date(timestamp).toLocaleString('en-US');
     },
     
     /**
-     * 格式化文件大小
+     * Format file size
      */
     formatFileSize(bytes) {
         if (bytes === 0) return '0 Bytes';
@@ -563,7 +563,7 @@ window.KGCompassUtils = {
     },
     
     /**
-     * 复制文本到剪贴板
+     * Copy text to clipboard
      */
     async copyToClipboard(text) {
         try {

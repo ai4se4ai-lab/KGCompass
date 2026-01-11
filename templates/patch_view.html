@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>补丁预览 - {{ instance_id }}</title>
+    <title>Patch Preview - {{ instance_id }}</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -82,7 +82,7 @@
         }
         
         .copy-button.copied::after {
-            content: "已复制!";
+            content: "Copied!";
             position: absolute;
             top: -30px;
             left: 50%;
@@ -106,32 +106,32 @@
             <div class="navbar-nav ms-auto">
                 <a class="nav-link" href="/">
                     <i class="fas fa-arrow-left me-1"></i>
-                    返回主页
+                    Back to Home
                 </a>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
-        <!-- 补丁信息卡片 -->
+        <!-- Patch Information Card -->
         <div class="card mb-4">
             <div class="card-header bg-primary text-white">
                 <div class="row align-items-center">
                     <div class="col">
                         <h5 class="card-title mb-0">
                             <i class="fas fa-file-code me-2"></i>
-                            补丁预览
+                            Patch Preview
                         </h5>
                         <small class="opacity-75">{{ instance_id }}</small>
                     </div>
                     <div class="col-auto">
                         <button class="btn btn-light btn-sm copy-button" onclick="copyPatchContent()">
                             <i class="fas fa-copy me-1"></i>
-                            复制补丁
+                            Copy Patch
                         </button>
                         <a href="{{ download_url }}" class="btn btn-success btn-sm ms-2">
                             <i class="fas fa-download me-1"></i>
-                            下载
+                            Download
                         </a>
                     </div>
                 </div>
@@ -139,25 +139,25 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <h6 class="text-muted mb-2">仓库信息</h6>
-                        <p class="mb-1"><strong>仓库:</strong> {{ repo_name }}</p>
-                        <p class="mb-1"><strong>实例ID:</strong> {{ instance_id }}</p>
+                        <h6 class="text-muted mb-2">Repository Information</h6>
+                        <p class="mb-1"><strong>Repository:</strong> {{ repo_name }}</p>
+                        <p class="mb-1"><strong>Instance ID:</strong> {{ instance_id }}</p>
                     </div>
                     <div class="col-md-6">
-                        <h6 class="text-muted mb-2">修改统计</h6>
+                        <h6 class="text-muted mb-2">Change Statistics</h6>
                         <div>
                             {% if stats %}
                             <span class="badge bg-success stats-badge me-2">
-                                <i class="fas fa-plus"></i> +{{ stats.additions }} 行
+                                <i class="fas fa-plus"></i> +{{ stats.additions }} lines
                             </span>
                             <span class="badge bg-danger stats-badge me-2">
-                                <i class="fas fa-minus"></i> -{{ stats.deletions }} 行
+                                <i class="fas fa-minus"></i> -{{ stats.deletions }} lines
                             </span>
                             <span class="badge bg-info stats-badge">
-                                <i class="fas fa-file"></i> {{ stats.files }} 文件
+                                <i class="fas fa-file"></i> {{ stats.files }} files
                             </span>
                             {% else %}
-                            <span class="text-muted">统计信息不可用</span>
+                            <span class="text-muted">Statistics unavailable</span>
                             {% endif %}
                         </div>
                     </div>
@@ -165,12 +165,12 @@
             </div>
         </div>
 
-        <!-- 补丁内容 -->
+        <!-- Patch Content -->
         <div class="card">
             <div class="card-header bg-dark text-white">
                 <h6 class="mb-0">
                     <i class="fas fa-code me-2"></i>
-                    补丁内容
+                    Patch Content
                 </h6>
             </div>
             <div class="card-body p-0">
@@ -184,21 +184,21 @@
                     {% else %}
                     <div class="text-center py-5">
                         <i class="fas fa-exclamation-circle fa-3x text-warning mb-3"></i>
-                        <h5>补丁内容不可用</h5>
-                        <p class="text-muted">无法读取补丁文件内容</p>
+                        <h5>Patch content unavailable</h5>
+                        <p class="text-muted">Unable to read patch file content</p>
                     </div>
                     {% endif %}
                 </div>
             </div>
         </div>
 
-        <!-- 文件差异详情 -->
+        <!-- File Change Details -->
         {% if file_changes %}
         <div class="card mt-4">
             <div class="card-header">
                 <h6 class="mb-0">
                     <i class="fas fa-list me-2"></i>
-                    修改的文件 ({{ file_changes | length }})
+                    Modified Files ({{ file_changes | length }})
                 </h6>
             </div>
             <div class="card-body">
@@ -213,7 +213,7 @@
                             <div class="small text-muted">
                                 <span class="badge bg-success me-1">+{{ file.additions }}</span>
                                 <span class="badge bg-danger me-1">-{{ file.deletions }}</span>
-                                <span class="text-muted">{{ file.changes }} 处修改</span>
+                                <span class="text-muted">{{ file.changes }} changes</span>
                             </div>
                         </div>
                     </div>
@@ -230,12 +230,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     
     <script>
-        // 复制补丁内容到剪贴板
+        // Copy patch content to clipboard
         async function copyPatchContent() {
             const copyButton = document.querySelector('.copy-button');
             
             try {
-                // 获取补丁内容
+                // Get patch content
                 const patchLines = document.querySelectorAll('.patch-line');
                 const patchContent = Array.from(patchLines)
                     .map(line => line.textContent)
@@ -243,28 +243,28 @@
                 
                 await navigator.clipboard.writeText(patchContent);
                 
-                // 显示复制成功反馈
+                // Show copy success feedback
                 copyButton.classList.add('copied');
-                copyButton.innerHTML = '<i class="fas fa-check me-1"></i>已复制';
+                copyButton.innerHTML = '<i class="fas fa-check me-1"></i>Copied';
                 
                 setTimeout(() => {
                     copyButton.classList.remove('copied');
-                    copyButton.innerHTML = '<i class="fas fa-copy me-1"></i>复制补丁';
+                    copyButton.innerHTML = '<i class="fas fa-copy me-1"></i>Copy Patch';
                 }, 2000);
                 
             } catch (err) {
-                console.error('复制失败:', err);
-                copyButton.innerHTML = '<i class="fas fa-times me-1"></i>复制失败';
+                console.error('Copy failed:', err);
+                copyButton.innerHTML = '<i class="fas fa-times me-1"></i>Copy Failed';
                 copyButton.classList.add('btn-danger');
                 
                 setTimeout(() => {
-                    copyButton.innerHTML = '<i class="fas fa-copy me-1"></i>复制补丁';
+                    copyButton.innerHTML = '<i class="fas fa-copy me-1"></i>Copy Patch';
                     copyButton.classList.remove('btn-danger');
                 }, 2000);
             }
         }
         
-        // 初始化代码高亮
+        // Initialize code highlighting
         document.addEventListener('DOMContentLoaded', function() {
             hljs.highlightAll();
         });

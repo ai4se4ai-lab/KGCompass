@@ -103,11 +103,11 @@ class CodeRepair:
 
     def adjust_command_indentation(self, command, indent_change):
         """
-        统一调整编辑命令中所有行的缩进
+        Uniformly adjust indentation of all lines in edit command
         
         Args:
-            command (dict): 包含 'command', 'start_line', 'end_line' 的编辑命令
-            indent_change (int): 缩进调整量（正数增加缩进，负数减少缩进）
+            command (dict): Edit command containing 'command', 'start_line', 'end_line'
+            indent_change (int): Indentation adjustment amount (positive increases indentation, negative decreases)
         """
         search_replace = command['command'].split('\n=======\n')
         search_part = search_replace[0].split('<<<<<<< SEARCH')[1].strip('\n')
@@ -116,13 +116,13 @@ class CodeRepair:
         def adjust_lines(text):
             lines = text.splitlines()
             if indent_change < 0:
-                # 减少缩进
+                # Decrease indentation
                 return '\n'.join(
                     line[abs(indent_change):] if line.startswith(' ' * abs(indent_change)) else line 
                     for line in lines
                 )
             else:
-                # 增加缩进
+                # Increase indentation
                 return '\n'.join(' ' * indent_change + line for line in lines)
         
         adjusted_search = adjust_lines(search_part)

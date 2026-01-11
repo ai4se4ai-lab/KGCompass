@@ -87,8 +87,8 @@ class PatchLinkExpander:
                                 
                                 relevant_changes = self._extract_changes(file.patch, target_old_line, target_new_line)
                                 
-                                location_info = f"位置: {old_location} -> {new_location}" if old_location != new_location else f"位置: {new_location}"
-                                return f"\n文件: {file.filename}\n{location_info}\n行号: {target_old_line}->{target_new_line}\n```\n{relevant_changes}\n```\n"
+                                location_info = f"Location: {old_location} -> {new_location}" if old_location != new_location else f"Location: {new_location}"
+                                return f"\nFile: {file.filename}\n{location_info}\nLine: {target_old_line}->{target_new_line}\n```\n{relevant_changes}\n```\n"
                             
                             finally:
                                 os.unlink(old_file_path)

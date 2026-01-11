@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 import os
 import re
 
-# === 新增：扩展名 → 语言 的映射 ==============
+# === New: Extension → Language mapping ==============
 EXT_LANG_MAP = {
     '.py':   'python',
     '.java': 'java',
@@ -14,7 +14,7 @@ EXT_LANG_MAP = {
 }
 
 def language_by_extension(file_path: str) -> str | None:
-    """根据文件扩展名推断语言（不支持则返回 None）"""
+    """Infer language from file extension (returns None if not supported)"""
     for ext, lang in EXT_LANG_MAP.items():
         if file_path.endswith(ext):
             return lang
@@ -754,7 +754,7 @@ class CppParser(BaseParser):
         return []
 
 class JavaParser(BaseParser):
-    """Java 源码解析器，使用 javalang 解析。返回 AST 以及源码文本"""
+    """Java source code parser using javalang. Returns AST and source code text"""
 
     def __init__(self):
         super().__init__('java')
@@ -836,7 +836,7 @@ class JavaParser(BaseParser):
         return tree, content
 
     def _find_block_end(self, start_line, content):
-        """简单地根据花括号匹配，估算代码块结束行。"""
+        """Simply estimate code block end line based on brace matching."""
         lines = content.splitlines()
         brace_level = 0
         # Ensure start_line is valid
@@ -959,13 +959,13 @@ class JavaParser(BaseParser):
         return methods
         
     def _get_package_from_file(self, file_path):
-        """从文件内容中提取包声明。返回包名（不包含分号）或空字符串。"""
+        """Extract package declaration from file content. Returns package name (without semicolon) or empty string."""
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 for line in f:
                     line = line.strip()
                     if line.startswith('package '):
-                        # 移除 'package ' 前缀和结尾的分号
+                        # Remove 'package ' prefix and trailing semicolon
                         return line[8:].rstrip(';')
             return ""
         except Exception as e:
@@ -973,14 +973,14 @@ class JavaParser(BaseParser):
             return ""
 
     def _get_method_signature(self, method_node, file_path_param: str): # For MethodDeclaration, added file_path_param
-        # 从文件内容中获取包名
+        # Get package name from file content
         package_name_str = ""
         if file_path_param:
             package_name_str = self._get_package_from_file(file_path_param)
             if package_name_str:
                 package_name_str += "."
 
-        # 获取类名
+        # Get class name
         class_name_parts = []
         try:
             current_node = method_node.parent if hasattr(method_node, 'parent') else None
@@ -1003,10 +1003,10 @@ class JavaParser(BaseParser):
 
         qualified_class_name_str = ".".join(class_name_parts) + "." if class_name_parts else ""
         
-        # 获取返回类型
+        # Get return type
         return_type = self._get_type_name(method_node.return_type) if method_node.return_type else "void"
         
-        # 获取参数列表
+        # Get parameter list
         params_with_names = []
         if method_node.parameters:
             for param in method_node.parameters:
@@ -1014,7 +1014,7 @@ class JavaParser(BaseParser):
                 param_name = param.name
                 params_with_names.append(f"{param_type_name} {param_name}".strip())
 
-        # 构建完整签名：包路径.类名.方法名(参数类型 参数名列表): 返回类型
+        # Build complete signature: package_path.class_name.method_name(parameter_type parameter_name_list): return_type
         return f"{package_name_str}{qualified_class_name_str}{method_node.name}({', '.join(params_with_names)}): {return_type}"
 
     def _get_type_name(self, type_node):
@@ -1084,7 +1084,7 @@ class JavaParser(BaseParser):
         return methods
 
     def get_imports(self, file_path):
-        """返回映射: 简名 -> 完整限定名，同时保留通配符前缀。"""
+        """Returns mapping: simple_name -> fully_qualified_name, while preserving wildcard prefixes."""
         imports = {}
         self.wildcard_imports = []  # e.g. java.util.*
         try:

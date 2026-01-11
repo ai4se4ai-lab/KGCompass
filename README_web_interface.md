@@ -1,299 +1,299 @@
-# KGCompass Web 界面
+# KGCompass Web Interface
 
-一个直观的 Web 界面，让用户能够轻松体验 KGCompass 的软件修复流程，实时查看修复过程并获取最终补丁。
+An intuitive web interface that allows users to easily experience KGCompass software repair workflows, view the repair process in real-time, and obtain final patches.
 
-## 🌟 特性
+## 🌟 Features
 
-### 🎯 核心功能
-- **直观操作**: 通过 Web 界面选择仓库和输入 Issue ID
-- **实时反馈**: WebSocket 实时显示修复进度和日志
-- **流程可视化**: 清晰展示知识图谱挖掘、故障定位、补丁生成等步骤
-- **补丁下载**: 修复完成后可直接下载生成的补丁文件
-- **多仓库支持**: 支持 12 个热门 Python 开源项目
+### 🎯 Core Features
+- **Intuitive Operation**: Select repositories and enter Issue IDs through the web interface
+- **Real-time Feedback**: WebSocket displays repair progress and logs in real-time
+- **Process Visualization**: Clearly displays steps such as knowledge graph mining, fault localization, and patch generation
+- **Patch Download**: Directly download generated patch files after repair completion
+- **Multi-repository Support**: Supports 12 popular Python open-source projects
 
-### 🛠️ 技术特性
-- **响应式设计**: 支持桌面和移动设备
-- **现代化界面**: 使用 Bootstrap 5 和 Font Awesome
-- **实时通信**: 基于 Socket.IO 的双向通信
-- **优雅动画**: 流畅的过渡效果和加载动画
-- **错误处理**: 完善的错误处理和用户反馈
+### 🛠️ Technical Features
+- **Responsive Design**: Supports desktop and mobile devices
+- **Modern Interface**: Uses Bootstrap 5 and Font Awesome
+- **Real-time Communication**: Bidirectional communication based on Socket.IO
+- **Elegant Animations**: Smooth transitions and loading animations
+- **Error Handling**: Comprehensive error handling and user feedback
 
-## 📋 支持的仓库
+## 📋 Supported Repositories
 
-| 仓库 | 描述 | Stars |
+| Repository | Description | Stars |
 |------|------|-------|
-| astropy/astropy | Python库，用于天文学和天体物理学 | 4.3k ⭐ |
-| django/django | 高级Python Web框架 | 79k ⭐ |
-| matplotlib/matplotlib | Python 2D绘图库 | 19k ⭐ |
-| mwaskom/seaborn | 基于matplotlib的统计数据可视化库 | 12k ⭐ |
-| psf/requests | 优雅简洁的Python HTTP库 | 52k ⭐ |
-| pallets/flask | 轻量级Python Web框架 | 67k ⭐ |
-| pydata/xarray | N-D标记数组和数据集处理库 | 3.6k ⭐ |
-| pylint-dev/pylint | Python代码静态分析工具 | 5.2k ⭐ |
-| pytest-dev/pytest | Python测试框架 | 11k ⭐ |
-| scikit-learn/scikit-learn | Python机器学习库 | 59k ⭐ |
-| sphinx-doc/sphinx | Python文档生成工具 | 6.4k ⭐ |
-| sympy/sympy | Python符号数学库 | 12k ⭐ |
+| astropy/astropy | Python library for astronomy and astrophysics | 4.3k ⭐ |
+| django/django | High-level Python web framework | 79k ⭐ |
+| matplotlib/matplotlib | Python 2D plotting library | 19k ⭐ |
+| mwaskom/seaborn | Statistical data visualization library based on matplotlib | 12k ⭐ |
+| psf/requests | Elegant and simple Python HTTP library | 52k ⭐ |
+| pallets/flask | Lightweight Python web framework | 67k ⭐ |
+| pydata/xarray | N-D labeled arrays and datasets library | 3.6k ⭐ |
+| pylint-dev/pylint | Python code static analysis tool | 5.2k ⭐ |
+| pytest-dev/pytest | Python testing framework | 11k ⭐ |
+| scikit-learn/scikit-learn | Python machine learning library | 59k ⭐ |
+| sphinx-doc/sphinx | Python documentation generation tool | 6.4k ⭐ |
+| sympy/sympy | Python symbolic mathematics library | 12k ⭐ |
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 方法一：Docker 模式（推荐 - 完整功能）
+### Method 1: Docker Mode (Recommended - Full Functionality)
 
-Docker 模式提供完整的 KGCompass 修复功能，包括 Neo4j 数据库和 GPU 支持。
+Docker mode provides complete KGCompass repair functionality, including Neo4j database and GPU support.
 
 ```bash
-# 给启动脚本添加执行权限
+# Add execute permission to startup script
 chmod +x start_web_docker.sh
 
-# 启动 Docker 模式 Web 界面
+# Start Docker mode web interface
 ./start_web_docker.sh
 ```
 
-**前置要求**：
-- Docker 和 Docker Compose
-- NVIDIA GPU 和 Container Toolkit（用于 GPU 加速）
-- `.env` 文件配置（API 密钥等）
+**Prerequisites**:
+- Docker and Docker Compose
+- NVIDIA GPU and Container Toolkit (for GPU acceleration)
+- `.env` file configuration (API keys, etc.)
 
-### 方法二：独立模式（仅演示）
+### Method 2: Standalone Mode (Demo Only)
 
-独立模式仅用于界面演示，不执行真实的修复流程。
+Standalone mode is only for interface demonstration and does not execute actual repair workflows.
 
 ```bash
-# 给启动脚本添加执行权限
+# Add execute permission to startup script
 chmod +x start_web.sh
 
-# 启动独立模式 Web 界面
+# Start standalone mode web interface
 ./start_web.sh
 ```
 
-### 方法三：手动启动
+### Method 3: Manual Startup
 
 ```bash
-# 1. 创建虚拟环境
+# 1. Create virtual environment
 python3 -m venv venv
 source venv/bin/activate
 
-# 2. 安装依赖
+# 2. Install dependencies
 pip install -r requirements_web.txt
 
-# 3. 启动应用
+# 3. Start application
 python3 app.py
 ```
 
-### 访问界面
+### Access Interface
 
-打开浏览器访问: **http://localhost:5000**
+Open browser and visit: **http://localhost:5000**
 
-## 🎮 使用指南
+## 🎮 Usage Guide
 
-### 1. 选择仓库
-- 从下拉菜单中选择要修复的仓库
-- 界面会显示仓库描述和星标数
+### 1. Select Repository
+- Select the repository to repair from the dropdown menu
+- Interface will display repository description and star count
 
-### 2. 输入实例ID
-- 输入 SWE-bench 格式的实例ID
-- 格式: `repo__repo-number`（如：`astropy__astropy-12907`）
+### 2. Enter Instance ID
+- Enter instance ID in SWE-bench format
+- Format: `repo__repo-number` (e.g., `astropy__astropy-12907`)
 
-### 3. 使用快速示例
-- 点击界面上的示例按钮快速填充
-- 选择仓库后会显示该仓库的相关示例
+### 3. Use Quick Examples
+- Click example buttons on the interface to quickly fill in
+- After selecting a repository, relevant examples for that repository will be displayed
 
-### 4. 开始修复
-- 点击"开始修复"按钮启动流程
-- 实时查看修复进度和详细日志
+### 4. Start Repair
+- Click "Start Repair" button to start the process
+- View repair progress and detailed logs in real-time
 
-### 5. 获取结果
-- 修复完成后可下载补丁文件
-- 查看修复报告了解详细信息
+### 5. Get Results
+- Download patch files after repair completion
+- View repair reports for detailed information
 
-## 🔄 修复流程
+## 🔄 Repair Workflow
 
-### 阶段 1: 知识图谱挖掘 (0-30%)
-- 📥 克隆仓库
-- 🔍 分析代码结构
-- 📊 构建知识图谱
-- 🔗 链接问题和代码
-- 💾 保存KG数据
+### Stage 1: Knowledge Graph Mining (0-30%)
+- 📥 Clone repository
+- 🔍 Analyze code structure
+- 📊 Build knowledge graph
+- 🔗 Link issues and code
+- 💾 Save KG data
 
-### 阶段 2: LLM 故障定位 (30-60%)
-- 📖 分析问题描述
-- 🤖 调用Claude模型
-- 🎯 定位可疑文件
-- 📍 识别可疑方法
+### Stage 2: LLM Fault Localization (30-60%)
+- 📖 Analyze problem description
+- 🤖 Call Claude model
+- 🎯 Locate suspicious files
+- 📍 Identify suspicious methods
 
-### 阶段 3: 结果融合 (60-80%)
-- 🔗 合并KG和LLM的定位结果
-- ✅ 优化定位精度
+### Stage 3: Result Fusion (60-80%)
+- 🔗 Merge localization results from KG and LLM
+- ✅ Optimize localization accuracy
 
-### 阶段 4: 补丁生成 (80-100%)
-- 📝 准备修复上下文
-- 🤖 调用Claude API
-- ⚡ 生成候选补丁
-- ✅ 验证补丁语法
+### Stage 4: Patch Generation (80-100%)
+- 📝 Prepare repair context
+- 🤖 Call Claude API
+- ⚡ Generate candidate patches
+- ✅ Validate patch syntax
 
-## 📁 项目结构
+## 📁 Project Structure
 
 ```
 KGCompass/
-├── app.py                      # Flask 主应用
-├── requirements_web.txt        # Web 界面依赖
-├── start_web.sh               # 快速启动脚本
+├── app.py                      # Flask main application
+├── requirements_web.txt        # Web interface dependencies
+├── start_web.sh               # Quick startup script
 ├── templates/
-│   └── index.html             # 主页模板
+│   └── index.html             # Home page template
 ├── static/
 │   ├── css/
-│   │   └── style.css          # 自定义样式
+│   │   └── style.css          # Custom styles
 │   └── js/
-│       └── app.js             # 前端逻辑
-└── web_outputs/               # 输出目录
+│       └── app.js             # Frontend logic
+└── web_outputs/               # Output directory
     └── [task_id]/
-        ├── [instance]_patch.diff    # 补丁文件
-        └── [instance]_report.json   # 修复报告
+        ├── [instance]_patch.diff    # Patch file
+        └── [instance]_report.json   # Repair report
 ```
 
-## 🔧 技术栈
+## 🔧 Technology Stack
 
-### 后端
-- **Flask**: Web 框架
-- **Flask-SocketIO**: WebSocket 支持
-- **Threading**: 异步任务处理
-- **JSON**: 数据交换格式
+### Backend
+- **Flask**: Web framework
+- **Flask-SocketIO**: WebSocket support
+- **Threading**: Asynchronous task processing
+- **JSON**: Data exchange format
 
-### 前端
-- **Bootstrap 5**: UI 框架
-- **Font Awesome**: 图标库
-- **Socket.IO**: 实时通信
-- **Vanilla JavaScript**: 前端逻辑
+### Frontend
+- **Bootstrap 5**: UI framework
+- **Font Awesome**: Icon library
+- **Socket.IO**: Real-time communication
+- **Vanilla JavaScript**: Frontend logic
 
-### 核心依赖
+### Core Dependencies
 ```python
 Flask==3.0.0
 Flask-SocketIO==5.3.6
 python-socketio==5.10.0
 ```
 
-## 📊 示例用法
+## 📊 Example Usage
 
-### 1. 简单修复任务
+### 1. Simple Repair Task
 ```
-仓库: matplotlib/matplotlib
-实例ID: matplotlib__matplotlib-13989
-问题: hist() 函数在 density=True 时不遵守 range 参数
-```
-
-### 2. 复杂修复任务
-```
-仓库: scikit-learn/scikit-learn
-实例ID: scikit-learn__scikit-learn-13497
-问题: 机器学习算法的性能优化问题
+Repository: matplotlib/matplotlib
+Instance ID: matplotlib__matplotlib-13989
+Issue: hist() function does not respect range parameter when density=True
 ```
 
-## 🎯 高级功能
+### 2. Complex Repair Task
+```
+Repository: scikit-learn/scikit-learn
+Instance ID: scikit-learn__scikit-learn-13497
+Issue: Performance optimization problem in machine learning algorithm
+```
 
-### 实时日志
-- WebSocket 连接实时推送执行日志
-- 自动滚动到最新日志
-- 支持日志搜索和过滤
+## 🎯 Advanced Features
 
-### 任务管理
-- 支持多个并发修复任务
-- 任务状态实时更新
-- 任务历史记录
+### Real-time Logs
+- WebSocket connection pushes execution logs in real-time
+- Auto-scroll to latest logs
+- Support log search and filtering
 
-### 错误处理
-- 优雅的错误处理和用户反馈
-- 详细的错误信息和解决建议
-- 自动重试机制
+### Task Management
+- Support multiple concurrent repair tasks
+- Real-time task status updates
+- Task history records
 
-## 🔍 故障排除
+### Error Handling
+- Graceful error handling and user feedback
+- Detailed error information and solution suggestions
+- Automatic retry mechanism
 
-### 常见问题
+## 🔍 Troubleshooting
 
-**1. 端口被占用**
+### Common Issues
+
+**1. Port Already in Use**
 ```bash
-# 查找占用端口的进程
+# Find process using the port
 lsof -i :5000
 
-# 杀死进程（替换 PID）
+# Kill the process (replace PID)
 kill -9 <PID>
 ```
 
-**2. 依赖安装失败**
+**2. Dependency Installation Failed**
 ```bash
-# 升级 pip
+# Upgrade pip
 pip install --upgrade pip
 
-# 清理缓存重新安装
+# Clear cache and reinstall
 pip cache purge
 pip install -r requirements_web.txt
 ```
 
-**3. WebSocket 连接失败**
-- 检查防火墙设置
-- 确保端口 5000 可访问
-- 检查浏览器 WebSocket 支持
+**3. WebSocket Connection Failed**
+- Check firewall settings
+- Ensure port 5000 is accessible
+- Check browser WebSocket support
 
-### 调试模式
+### Debug Mode
 
-启用详细日志：
+Enable verbose logging:
 ```bash
 export FLASK_DEBUG=1
 python3 app.py
 ```
 
-## 🚧 开发说明
+## 🚧 Development Notes
 
-### 本地开发环境
+### Local Development Environment
 
 ```bash
-# 克隆仓库
+# Clone repository
 git clone <repo-url>
 cd KGCompass
 
-# 安装开发依赖
+# Install development dependencies
 pip install -r requirements_web.txt
 
-# 启动开发服务器
+# Start development server
 python3 app.py
 ```
 
-### 自定义配置
+### Custom Configuration
 
-修改 `app.py` 中的配置：
+Modify configuration in `app.py`:
 ```python
-# 更改端口
+# Change port
 socketio.run(app, host='0.0.0.0', port=8080, debug=True)
 
-# 添加新的仓库
+# Add new repository
 SUPPORTED_REPOS['new_repo'] = {
     "name": "owner/repo",
-    "description": "描述",
+    "description": "Description",
     "language": "Python",
     "stars": "1k"
 }
 ```
 
-## 🤝 贡献指南
+## 🤝 Contributing
 
-欢迎提交 Issue 和 Pull Request！
+Welcome to submit Issues and Pull Requests!
 
-1. Fork 项目
-2. 创建特性分支
-3. 提交更改
-4. 推送到分支
-5. 创建 Pull Request
+1. Fork the project
+2. Create a feature branch
+3. Commit changes
+4. Push to branch
+5. Create Pull Request
 
-## 📄 许可证
+## 📄 License
 
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+This project uses MIT License - see [LICENSE](LICENSE) file for details.
 
-## 🙏 致谢
+## 🙏 Acknowledgments
 
-- [KGCompass 论文](https://arxiv.org/abs/2503.21710) - 核心算法
-- [SWE-bench](https://www.swebench.com/) - 评估数据集
-- [Bootstrap](https://getbootstrap.com/) - UI 框架
-- [Font Awesome](https://fontawesome.com/) - 图标库
+- [KGCompass Paper](https://arxiv.org/abs/2503.21710) - Core algorithm
+- [SWE-bench](https://www.swebench.com/) - Evaluation dataset
+- [Bootstrap](https://getbootstrap.com/) - UI framework
+- [Font Awesome](https://fontawesome.com/) - Icon library
 
 ---
 
-**🚀 开始您的软件修复之旅！** 
+**🚀 Start your software repair journey!**

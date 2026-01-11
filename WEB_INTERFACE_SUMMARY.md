@@ -1,135 +1,135 @@
-# KGCompass Web 界面完整实现总结
+# KGCompass Web Interface Complete Implementation Summary
 
-## 🎯 概述
+## 🎯 Overview
 
-成功为 KGCompass 创建了一个完整的 Web 界面，让用户能够直观地体验软件修复流程。该界面支持两种模式：
+Successfully created a complete web interface for KGCompass, allowing users to intuitively experience the software repair workflow. The interface supports two modes:
 
-1. **Docker 模式**：完整功能，真实执行修复流程
-2. **独立模式**：仅界面演示，用于快速预览
+1. **Docker Mode**: Full functionality, executes actual repair workflows
+2. **Standalone Mode**: Interface demonstration only, for quick preview
 
-## 📁 文件结构
+## 📁 File Structure
 
 ```
 KGCompass/
-├── app.py                      # Flask 主应用 (23KB)
-├── start_web.sh               # 独立模式启动脚本
-├── start_web_docker.sh        # Docker 模式启动脚本
-├── demo_web.py                # 演示和测试脚本
-├── requirements_web.txt        # Web 界面依赖
-├── CONFIG.md                  # 配置说明文档
-├── README_web_interface.md    # 详细使用说明
-├── WEB_INTERFACE_SUMMARY.md   # 本总结文档
+├── app.py                      # Flask main application (23KB)
+├── start_web.sh               # Standalone mode startup script
+├── start_web_docker.sh        # Docker mode startup script
+├── demo_web.py                # Demo and test script
+├── requirements_web.txt        # Web interface dependencies
+├── CONFIG.md                  # Configuration documentation
+├── README_web_interface.md    # Detailed usage instructions
+├── WEB_INTERFACE_SUMMARY.md   # This summary document
 ├── templates/
-│   ├── index.html             # 主页模板 (13.7KB)
-│   └── patch_view.html        # 补丁预览页面 (8.2KB)
+│   ├── index.html             # Home page template (13.7KB)
+│   └── patch_view.html        # Patch preview page (8.2KB)
 └── static/
     ├── css/
-    │   └── style.css          # 自定义样式 (7.1KB)
+    │   └── style.css          # Custom styles (7.1KB)
     └── js/
-        └── app.js             # 前端逻辑 (17.8KB)
+        └── app.js             # Frontend logic (17.8KB)
 ```
 
-## 🌟 核心功能
+## 🌟 Core Features
 
-### 1. 用户界面功能
-- **仓库选择**：支持 12 个热门 Python 开源项目
-- **实例输入**：SWE-bench 格式的 Issue ID 输入
-- **快速示例**：预设示例按钮，快速填充
-- **实时进度**：WebSocket 实时显示修复进度
-- **实时日志**：完整的修复过程日志展示
+### 1. User Interface Features
+- **Repository Selection**: Supports 12 popular Python open-source projects
+- **Instance Input**: SWE-bench format Issue ID input
+- **Quick Examples**: Preset example buttons for quick filling
+- **Real-time Progress**: WebSocket displays repair progress in real-time
+- **Real-time Logs**: Complete repair process log display
 
-### 2. 修复流程可视化
-- **阶段1 (0-30%)**：知识图谱挖掘
-- **阶段2 (30-50%)**：LLM 故障定位  
-- **阶段3 (50-70%)**：结果融合
-- **阶段4 (70-90%)**：补丁生成
-- **阶段5 (90-100%)**：结果收集
+### 2. Repair Workflow Visualization
+- **Stage 1 (0-30%)**: Knowledge graph mining
+- **Stage 2 (30-50%)**: LLM fault localization  
+- **Stage 3 (50-70%)**: Result fusion
+- **Stage 4 (70-90%)**: Patch generation
+- **Stage 5 (90-100%)**: Result collection
 
-### 3. 补丁管理
-- **在线预览**：语法高亮的补丁内容展示
-- **文件下载**：直接下载生成的补丁文件
-- **统计信息**：显示修改统计（添加/删除行数）
-- **文件变更**：详细的文件变更列表
+### 3. Patch Management
+- **Online Preview**: Syntax-highlighted patch content display
+- **File Download**: Direct download of generated patch files
+- **Statistics**: Display modification statistics (added/deleted lines)
+- **File Changes**: Detailed file change list
 
-## 🐳 Docker 集成
+## 🐳 Docker Integration
 
-### Docker 模式特性
-- **完整环境**：包含 Neo4j 数据库和应用容器
-- **GPU 支持**：支持 NVIDIA GPU 加速
-- **真实执行**：在 Docker 容器中执行真实的修复流程
-- **自动管理**：自动启动和管理 Docker 服务
+### Docker Mode Features
+- **Complete Environment**: Includes Neo4j database and application container
+- **GPU Support**: Supports NVIDIA GPU acceleration
+- **Real Execution**: Executes actual repair workflows in Docker container
+- **Automatic Management**: Automatically starts and manages Docker services
 
-### 执行流程
-1. 检查 Docker 环境
-2. 启动 docker-compose 服务（如需要）
-3. 在容器中执行 `run_repair.sh <instance_id>`
-4. 实时捕获输出和日志
-5. 从容器复制补丁文件到主机
-6. 展示修复结果
+### Execution Workflow
+1. Check Docker environment
+2. Start docker-compose services (if needed)
+3. Execute `run_repair.sh <instance_id>` in container
+4. Capture output and logs in real-time
+5. Copy patch files from container to host
+6. Display repair results
 
-## 🛠️ 技术实现
+## 🛠️ Technical Implementation
 
-### 后端技术栈
-- **Flask 3.0.0**：Web 框架
-- **Flask-SocketIO 5.3.6**：WebSocket 实时通信
-- **Python Threading**：异步任务处理
-- **Subprocess**：Docker 命令执行
-- **JSON**：数据交换格式
+### Backend Technology Stack
+- **Flask 3.0.0**: Web framework
+- **Flask-SocketIO 5.3.6**: WebSocket real-time communication
+- **Python Threading**: Asynchronous task processing
+- **Subprocess**: Docker command execution
+- **JSON**: Data exchange format
 
-### 前端技术栈
-- **Bootstrap 5**：响应式 UI 框架
-- **Font Awesome 6**：图标库
-- **Socket.IO**：客户端实时通信
-- **Vanilla JavaScript**：前端逻辑
-- **Highlight.js**：代码语法高亮
+### Frontend Technology Stack
+- **Bootstrap 5**: Responsive UI framework
+- **Font Awesome 6**: Icon library
+- **Socket.IO**: Client-side real-time communication
+- **Vanilla JavaScript**: Frontend logic
+- **Highlight.js**: Code syntax highlighting
 
-### 核心组件
+### Core Components
 
-#### RepairTaskManager 类
-- 管理修复任务的完整生命周期
-- 支持 Docker 容器中的命令执行
-- 实时日志捕获和 WebSocket 广播
-- 智能进度跟踪和状态管理
+#### RepairTaskManager Class
+- Manages complete lifecycle of repair tasks
+- Supports command execution in Docker containers
+- Real-time log capture and WebSocket broadcasting
+- Intelligent progress tracking and status management
 
-#### KGCompassApp 类（前端）
-- WebSocket 连接管理
-- 实时任务状态更新
-- 用户界面交互处理
-- 示例数据填充和管理
+#### KGCompassApp Class (Frontend)
+- WebSocket connection management
+- Real-time task status updates
+- User interface interaction handling
+- Example data filling and management
 
-## 🎮 用户体验
+## 🎮 User Experience
 
-### 操作流程
-1. **选择仓库**：从下拉菜单选择目标仓库
-2. **输入实例**：填写 SWE-bench 实例 ID
-3. **快速示例**：点击示例按钮快速填充
-4. **开始修复**：启动修复流程
-5. **实时监控**：观看修复进度和日志
-6. **查看结果**：预览补丁内容
-7. **下载文件**：获取补丁文件
+### Operation Workflow
+1. **Select Repository**: Choose target repository from dropdown menu
+2. **Enter Instance**: Fill in SWE-bench instance ID
+3. **Quick Examples**: Click example buttons for quick filling
+4. **Start Repair**: Launch repair workflow
+5. **Real-time Monitoring**: Watch repair progress and logs
+6. **View Results**: Preview patch content
+7. **Download Files**: Get patch files
 
-### 界面特性
-- **响应式设计**：支持桌面和移动设备
-- **现代化UI**：美观的卡片式布局
-- **实时反馈**：即时的进度和状态更新
-- **优雅动画**：流畅的过渡效果
-- **错误处理**：友好的错误信息和解决建议
+### Interface Features
+- **Responsive Design**: Supports desktop and mobile devices
+- **Modern UI**: Beautiful card-based layout
+- **Real-time Feedback**: Instant progress and status updates
+- **Elegant Animations**: Smooth transition effects
+- **Error Handling**: Friendly error messages and solution suggestions
 
-## 🚀 启动方式
+## 🚀 Startup Methods
 
-### Docker 模式（推荐）
+### Docker Mode (Recommended)
 ```bash
 chmod +x start_web_docker.sh
 ./start_web_docker.sh
 ```
 
-### 独立模式
+### Standalone Mode
 ```bash
 chmod +x start_web.sh
 ./start_web.sh
 ```
 
-### 手动启动
+### Manual Startup
 ```bash
 python3 -m venv venv
 source venv/bin/activate
@@ -137,75 +137,75 @@ pip install -r requirements_web.txt
 python3 app.py
 ```
 
-## 📋 支持的仓库
+## 📋 Supported Repositories
 
-| 仓库 | 描述 | Stars |
+| Repository | Description | Stars |
 |------|------|-------|
-| astropy/astropy | Python天文学库 | 4.3k ⭐ |
-| django/django | Web框架 | 79k ⭐ |
-| matplotlib/matplotlib | 2D绘图库 | 19k ⭐ |
-| scikit-learn/scikit-learn | 机器学习库 | 59k ⭐ |
-| flask/flask | 轻量级Web框架 | 67k ⭐ |
-| requests/requests | HTTP库 | 52k ⭐ |
-| *等8个项目* | ... | ... |
+| astropy/astropy | Python astronomy library | 4.3k ⭐ |
+| django/django | Web framework | 79k ⭐ |
+| matplotlib/matplotlib | 2D plotting library | 19k ⭐ |
+| scikit-learn/scikit-learn | Machine learning library | 59k ⭐ |
+| flask/flask | Lightweight web framework | 67k ⭐ |
+| requests/requests | HTTP library | 52k ⭐ |
+| *and 6 more projects* | ... | ... |
 
-## 🔧 配置要求
+## 🔧 Configuration Requirements
 
-### 基本要求
+### Basic Requirements
 - Python 3.10+
-- Flask 和相关依赖
-- 网络连接
+- Flask and related dependencies
+- Network connection
 
-### Docker 模式额外要求
-- Docker 和 Docker Compose
-- NVIDIA GPU + Container Toolkit（可选）
-- API 密钥配置（.env 文件）
+### Docker Mode Additional Requirements
+- Docker and Docker Compose
+- NVIDIA GPU + Container Toolkit (optional)
+- API key configuration (.env file)
 
-## 📊 性能特性
+## 📊 Performance Features
 
-### 实时通信
-- WebSocket 低延迟通信
-- 实时日志流式传输
-- 进度状态即时更新
+### Real-time Communication
+- WebSocket low-latency communication
+- Real-time log streaming
+- Instant progress status updates
 
-### 资源管理
-- 异步任务处理
-- 内存高效的日志缓冲
-- 自动任务清理机制
+### Resource Management
+- Asynchronous task processing
+- Memory-efficient log buffering
+- Automatic task cleanup mechanism
 
-### 容错处理
-- Docker 服务自动启动
-- 任务执行错误恢复
-- 详细错误信息提供
+### Fault Tolerance
+- Docker service auto-start
+- Task execution error recovery
+- Detailed error information provision
 
-## 🎯 核心价值
+## 🎯 Core Value
 
-### 对用户
-- **零配置体验**：一键启动完整环境
-- **可视化流程**：直观了解修复过程
-- **真实结果**：获得可用的修复补丁
-- **学习工具**：理解 KGCompass 工作原理
+### For Users
+- **Zero-configuration Experience**: One-click startup of complete environment
+- **Visualized Workflow**: Intuitive understanding of repair process
+- **Real Results**: Obtain usable repair patches
+- **Learning Tool**: Understand how KGCompass works
 
-### 对开发者
-- **演示平台**：展示 KGCompass 能力
-- **测试工具**：快速测试不同实例
-- **集成示例**：Web 界面集成参考
-- **扩展基础**：支持功能扩展
+### For Developers
+- **Demo Platform**: Showcase KGCompass capabilities
+- **Testing Tool**: Quickly test different instances
+- **Integration Example**: Web interface integration reference
+- **Extension Foundation**: Support feature expansion
 
-## 🔮 未来扩展
+## 🔮 Future Extensions
 
-### 功能增强
-- 批量修复任务支持
-- 修复历史记录管理
-- 补丁质量评估
-- 自定义仓库支持
+### Feature Enhancements
+- Batch repair task support
+- Repair history management
+- Patch quality assessment
+- Custom repository support
 
-### 技术优化
-- 容器化 Web 服务
-- 分布式任务执行
-- 更丰富的可视化
-- API 接口开放
+### Technical Optimization
+- Containerized web services
+- Distributed task execution
+- Richer visualizations
+- API interface exposure
 
 ---
 
-**🎉 KGCompass Web 界面为用户提供了一个完整、直观、强大的软件修复体验平台！** 
+**🎉 KGCompass Web Interface provides users with a complete, intuitive, and powerful software repair experience platform!**

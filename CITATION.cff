@@ -1,5 +1,5 @@
 cff-version: "1.2.0"
-message: "如果您在研究中使用 KGCompass，请引用下面的文章。"
+message: "If you use KGCompass in your research, please cite the following article."
 authors:
   - family-names: Yang
     given-names: Boyang
